@@ -1,0 +1,18 @@
+{
+  "name": "SIAPay",
+  "description": "Kreatif SIA Pay intergration for Shopware 6",
+  "type": "shopware-platform-plugin",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "SwSiaPay\\": "src/"
+    }
+  },
+  "extra": {
+    "shopware-plugin-class": "SwSiaPay\\SwSiaPay",
+    "label": {
+      "de-DE": "SIAPay",
+      "en-GB": "SIAPay"
+    }
+  }
+}
