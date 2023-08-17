@@ -1,19 +1,56 @@
 {
-    "name": "kreatif/sia-pay",
-    "description": "Kreatif SIA Pay intergration for Shopware 6",
-    "type": "shopware-platform-plugin",
-    "version": "6.4.20",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "SwSiaPay\\": "src/"
-        }
-    },
-    "extra": {
-        "shopware-plugin-class": "SwSiaPay\\SwSiaPay",
-        "label": {
-            "de-DE": "SIAPay",
-            "en-GB": "SIAPay"
-        }
+  "name": "kreatif/sia-pay",
+  "description": "Kreatif SIA Pay intergration for Shopware 6",
+  "type": "shopware-platform-plugin",
+  "version": "6.5",
+  "license": "MIT",
+  "config": {
+    "optimize-autoloader": true,
+    "allow-plugins": {
+      "infection/extension-installer": true
     }
+  },
+  "autoload": {
+    "psr-4": {
+      "SwSiaPay\\": "src/",
+      "sia-vpos\\": "vendor/"
+    }
+  },
+  "extra": {
+    "shopware-plugin-class": "SwSiaPay\\SwSiaPay",
+    "label": {
+      "de-DE": "SIAPay",
+      "en-GB": "SIAPay"
+    },
+    "description": {
+      "de-DE": "SiaPay Payment Gateway",
+      "en-GB": "SiaPay Payment Gateway"
+    },
+    "manufacturerLink": {
+      "de-DE": "",
+      "en-GB": ""
+    },
+    "supportLink": {
+      "de-DE": "",
+      "en-GB": ""
+    }
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "sia-vpos/vpos-client-php-sdk",
+        "version": "1",
+        "source": {
+          "url": "https://github.com/sia-vpos/vpos-client-php-sdk.git",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  ],
+  "require": {
+    "sia-vpos/vpos-client-php-sdk": "1",
+    "ext-openssl": "*"
+  }
 }

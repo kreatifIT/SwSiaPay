@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
+    <card>
+        <title>Schnittstellen-Einstellungen</title>
+
+        <input-field type="text">
+            <name>shopId</name>
+            <label>SHOP-ID / MID:</label>
+        </input-field>
+        <input-field type="text">
+            <name>macKeyRedirect</name>
+            <label>MAC_KEY_REDIRECT / Chiave Avvio:</label>
+        </input-field>
+        <input-field type="text">
+            <name>apiResultKey</name>
+            <label>API_RESULT_KEY / Chiave Esito API:</label>
+        </input-field>
+    </card>
+    <card>
+        <title>Testmodus:</title>
+        <input-field type="bool">
+            <name>siaPayUseSandbox</name>
+            <label>Verwende die Sandbox-Daten (Testmodus)</label>
+        </input-field>
+        <input-field type="text">
+            <name>sandboxShopId</name>
+            <label>SHOP-ID / MID:</label>
+        </input-field>
+        <input-field type="text">
+            <name>sandboxMacKeyRedirect</name>
+            <label>MAC_KEY_REDIRECT / Chiave Avvio:</label>
+        </input-field>
+        <input-field type="text">
+            <name>sandboxApiResultKey</name>
+            <label>API_RESULT_KEY / Chiave Esito API:</label>
+        </input-field>
+    </card>
+<!--    <card>-->
+<!--        <input-field type="text">-->
+<!--            <name>testdaten</name>-->
+<!--            <label>Testdaten:</label>-->
+<!--            <helpText>-->
+<!--                Karten-Typ CC-Typ CC-Nummer CC-Fälligkeit CC-CVV2-->
+<!--                Mastercard erfolgreiche Zahlung 5111114000023477 beliebig jede 3 stellige Nummer-->
+<!--                VISA erfolgreiche Zahlung 4333334000098346 beliebig jede 3 stellige Nummer-->
+<!--                Problemi all'anagrafica del negozio (R002) - URLMS = 02 4916915007272184 beliebig jede 3 stellige Nummer-->
+<!--                Transazione negata dai circuiti (RT02) - URLMS = 04 4916917946110665 beliebig jede 3 stellige Nummer-->
+<!--                Problemi di comunicazione con i legacy (RT01) - URLMS = 03 5255009990029383 beliebig jede 3 stellige Nummer-->
+<!--                Problema al servizio (R003) - URLMS = 06 5255003263949856 beliebig jede 3 stellige Nummer-->
+<!--                Ordine duplicato (RT00) - URLMS = 01 5255005093050169 beliebig jede 3 stellige Nummer-->
+<!--            </helpText>-->
+<!--        </input-field>-->
+<!--    </card>-->
+</config>

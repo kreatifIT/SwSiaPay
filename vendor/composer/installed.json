@@ -1,0 +1,19 @@
+{
+    "packages": [
+        {
+            "name": "sia-vpos/vpos-client-php-sdk",
+            "version": "1",
+            "version_normalized": "1.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sia-vpos/vpos-client-php-sdk.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "installation-source": "source",
+            "install-path": "../sia-vpos/vpos-client-php-sdk"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}
