@@ -55,9 +55,9 @@ class SiaPaymentController extends StorefrontController
 		$redirectUrl = null;
 		if ($request->get('RESULT') || $request->get('state')) {
 			if ($request->get('ORDERID')) {
-				$orderNumber = $request->get('ORDERID');
+				$orderNumber    = $request->get('ORDERID');
 				$responseParams = $request->query->all();
-				$criteria = new Criteria();
+				$criteria       = new Criteria();
 				$criteria->addFilter(new EqualsFilter('orderNumber', $orderNumber));
 				$order = $this->orderRepository->search($criteria, $context->getContext())->first();
 
@@ -65,21 +65,21 @@ class SiaPaymentController extends StorefrontController
 
 				$newCustomFields = array_merge($customFields, $responseParams);
 
-				$this->orderRepository->update(
-					[
-						[
-							'id'           => $order->getId(),
-							'customFields' => $newCustomFields,
-						],
-					],
-					$context->getContext()
-				);
+				//$this->orderRepository->update(
+				//	[
+				//		[
+				//			'id'           => $order->getId(),
+				//			'customFields' => $newCustomFields,
+				//		],
+				//	],
+				//	$context->getContext()
+				//);
 
 				$finalizeUrl = $this->router->generate(
 					'payment.finalize.transaction',
-					[
+					array_merge($newCustomFields, [
 						'_sw_payment_token' => $customFields['_sw_payment_token'],
-					],
+					]),
 					UrlGeneratorInterface::ABSOLUTE_URL
 				);
 
