@@ -65,25 +65,15 @@ class SiaPaymentController extends StorefrontController
 
 				$newCustomFields = array_merge($customFields, $responseParams);
 
-				//$this->orderRepository->update(
-				//	[
-				//		[
-				//			'id'           => $order->getId(),
-				//			'customFields' => $newCustomFields,
-				//		],
-				//	],
-				//	$context->getContext()
-				//);
-
-				$finalizeUrl = $this->router->generate(
-					'payment.finalize.transaction',
-					array_merge($newCustomFields, [
-						'_sw_payment_token' => $customFields['_sw_payment_token'],
-					]),
-					UrlGeneratorInterface::ABSOLUTE_URL
-				);
-
 				if ($request->get('state') === 'canceled') {
+					$finalizeUrl = $this->router->generate(
+						'payment.finalize.transaction',
+						array_merge($newCustomFields, [
+							'_sw_payment_token' => $customFields['_sw_payment_token'],
+							'state'             => 'canceled',
+						]),
+						UrlGeneratorInterface::ABSOLUTE_URL
+					);
 					$redirectUrl = $finalizeUrl . '&state=canceled';
 				} else {
 					if ($request->get('RESULT') == '00') {
@@ -91,12 +81,36 @@ class SiaPaymentController extends StorefrontController
 						$check = $this->checkSiaPaymentStatus($orderNumber, $order->getAmountTotal(), $request->get('TRANSACTIONID'));
 						if ($check) {
 							// redirect to success page with payment_token and success
+							$finalizeUrl = $this->router->generate(
+								'payment.finalize.transaction',
+								array_merge($newCustomFields, [
+									'_sw_payment_token' => $customFields['_sw_payment_token'],
+									'state'             => 'success',
+								]),
+								UrlGeneratorInterface::ABSOLUTE_URL
+							);
 							$redirectUrl = $finalizeUrl . '&state=success';
 						} else {
+							$finalizeUrl = $this->router->generate(
+								'payment.finalize.transaction',
+								array_merge($newCustomFields, [
+									'_sw_payment_token' => $customFields['_sw_payment_token'],
+									'state'             => 'failed',
+								]),
+								UrlGeneratorInterface::ABSOLUTE_URL
+							);
 							$redirectUrl = $finalizeUrl . '&state=failed';
 						}
 					} else {
 						// redirect to success page with payment_token and success
+						$finalizeUrl = $this->router->generate(
+							'payment.finalize.transaction',
+							array_merge($newCustomFields, [
+								'_sw_payment_token' => $customFields['_sw_payment_token'],
+								'state'             => 'failed 2',
+							]),
+							UrlGeneratorInterface::ABSOLUTE_URL
+						);
 						$redirectUrl = $finalizeUrl . '&state=failed';
 					}
 				}
