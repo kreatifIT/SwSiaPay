@@ -65,15 +65,25 @@ class SiaPaymentController extends StorefrontController
 
 				$newCustomFields = array_merge($customFields, $responseParams);
 
+				$this->orderRepository->update(
+					[
+						[
+							'id'           => $order->getId(),
+							'customFields' => $newCustomFields,
+						],
+					],
+					$context->getContext()
+				);
+				
+				$finalizeUrl = $this->router->generate(
+					'payment.finalize.transaction',
+					array_merge($newCustomFields, [
+						'_sw_payment_token' => $customFields['_sw_payment_token'],
+					]),
+					UrlGeneratorInterface::ABSOLUTE_URL
+				);
+
 				if ($request->get('state') === 'canceled') {
-					$finalizeUrl = $this->router->generate(
-						'payment.finalize.transaction',
-						array_merge($newCustomFields, [
-							'_sw_payment_token' => $customFields['_sw_payment_token'],
-							'state'             => 'canceled',
-						]),
-						UrlGeneratorInterface::ABSOLUTE_URL
-					);
 					$redirectUrl = $finalizeUrl . '&state=canceled';
 				} else {
 					if ($request->get('RESULT') == '00') {
@@ -81,36 +91,12 @@ class SiaPaymentController extends StorefrontController
 						$check = $this->checkSiaPaymentStatus($orderNumber, $order->getAmountTotal(), $request->get('TRANSACTIONID'));
 						if ($check) {
 							// redirect to success page with payment_token and success
-							$finalizeUrl = $this->router->generate(
-								'payment.finalize.transaction',
-								array_merge($newCustomFields, [
-									'_sw_payment_token' => $customFields['_sw_payment_token'],
-									'state'             => 'success',
-								]),
-								UrlGeneratorInterface::ABSOLUTE_URL
-							);
 							$redirectUrl = $finalizeUrl . '&state=success';
 						} else {
-							$finalizeUrl = $this->router->generate(
-								'payment.finalize.transaction',
-								array_merge($newCustomFields, [
-									'_sw_payment_token' => $customFields['_sw_payment_token'],
-									'state'             => 'failed',
-								]),
-								UrlGeneratorInterface::ABSOLUTE_URL
-							);
 							$redirectUrl = $finalizeUrl . '&state=failed';
 						}
 					} else {
 						// redirect to success page with payment_token and success
-						$finalizeUrl = $this->router->generate(
-							'payment.finalize.transaction',
-							array_merge($newCustomFields, [
-								'_sw_payment_token' => $customFields['_sw_payment_token'],
-								'state'             => 'failed 2',
-							]),
-							UrlGeneratorInterface::ABSOLUTE_URL
-						);
 						$redirectUrl = $finalizeUrl . '&state=failed';
 					}
 				}
@@ -120,20 +106,16 @@ class SiaPaymentController extends StorefrontController
 	}
 
 
-	private function checkSiaPaymentStatus(string $orderNumber, $amount, string $transactionId)
+	private function checkSiaPaymentStatus(string $orderNumber, $amount, string $transactionId): bool
 	{
-		if ($this->systemConfigService->get('SwSiaPay.config.siaPayUseSandbox')) {
-			$siaPayWebUrl = 'https://atpostest.ssb.it/atpos/apibo/apiBOXML.app';
-		} else {
-			$siaPayWebUrl = SiaPayment::SIA_PAY_URL;
-		}
-
 		$useSandBox = $this->systemConfigService->get('SwSiaPay.config.siaPayUseSandbox');
 		if ($useSandBox) {
+			$siaPayWebUrl         = 'https://atpostest.ssb.it/atpos/apibo/apiBOXML.app';
 			self::$shopId         = $this->systemConfigService->get('SwSiaPay.config.sandboxShopId');
 			self::$macKeyRedirect = $this->systemConfigService->get('SwSiaPay.config.sandboxMacKeyRedirect');
 			self::$apiResultKey   = $this->systemConfigService->get('SwSiaPay.config.sandboxApiResultKey');
 		} else {
+			$siaPayWebUrl         = SiaPayment::SIA_PAY_URL;
 			self::$shopId         = $this->systemConfigService->get('SwSiaPay.config.shopId');
 			self::$macKeyRedirect = $this->systemConfigService->get('SwSiaPay.config.macKeyRedirect');
 			self::$apiResultKey   = $this->systemConfigService->get('SwSiaPay.config.apiResultKey');
