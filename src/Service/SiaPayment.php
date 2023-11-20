@@ -179,10 +179,10 @@ class SiaPayment implements AsynchronousPaymentHandlerInterface
 		//		$paymentInfo->setShopEmail($shopMail);
 		$paymentInfo->setOptions('B');
 		//		$paymentInfo->setEmail($orderCustomer->getEmail());
-		//		$paymentInfo->setUserId($orderCustomer->getCustomerId());
+		//		$paymentInfo->setUserId($orderCustomer->getCustomerId()); 
 		$paymentInfo->setName($orderCustomer->getFirstName());
 		$paymentInfo->setSurname($orderCustomer->getLastName());
-		$paymentInfo->setUrlMs('https://test.kreatif.it/bachmann_shop/public/api/siaPayCheck');
+		$paymentInfo->setUrlMs('https://shop.holzschnitzerei-bachmann.com/api/siaPayCheck');
 		$paymentInfo->setData3DS($data3ds);
 
 		return $paymentInfo;
