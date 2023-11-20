@@ -73,9 +73,16 @@ class SiaPayment implements AsynchronousPaymentHandlerInterface
 		$transactionId = $transaction->getOrderTransaction()->getId();
 
 		if ($paymentState == 'canceled') {
-			$this->transactionStateHandler->fail($transaction->getOrderTransaction()->getId(), $context);
+			$this->transactionStateHandler->cancel($transaction->getOrderTransaction()->getId(), $context);
 			throw new CustomerCanceledAsyncPaymentException(
 				$transactionId, 'Customer canceled the payment on the SIA page'
+			);
+		}
+
+		if ($paymentState == 'failed') {
+			$this->transactionStateHandler->fail($transaction->getOrderTransaction()->getId(), $context);
+			throw new CustomerCanceledAsyncPaymentException(
+				$transactionId, 'Customer failed the payment on the SIA page'
 			);
 		}
 
