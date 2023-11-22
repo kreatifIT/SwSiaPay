@@ -109,13 +109,14 @@ class SiaPaymentController extends StorefrontController
 	private function checkSiaPaymentStatus(string $orderNumber, $amount, string $transactionId): bool
 	{
 		$useSandBox = $this->systemConfigService->get('SwSiaPay.config.siaPayUseSandbox');
+		
 		if ($useSandBox) {
-			$siaPayWebUrl         = 'https://atpostest.ssb.it/atpos/apibo/apiBOXML.app';
+			$siaPayWebUrl         = 'https://virtualpostest.sia.eu/vpos/apibo/apiBOXML-UTF8.app';
 			self::$shopId         = $this->systemConfigService->get('SwSiaPay.config.sandboxShopId');
 			self::$macKeyRedirect = $this->systemConfigService->get('SwSiaPay.config.sandboxMacKeyRedirect');
 			self::$apiResultKey   = $this->systemConfigService->get('SwSiaPay.config.sandboxApiResultKey');
 		} else {
-			$siaPayWebUrl         = SiaPayment::SIA_PAY_URL;
+			$siaPayWebUrl         = 'https://virtualpos.sia.eu/vpos/apibo/apiBOXML-UTF8.app';
 			self::$shopId         = $this->systemConfigService->get('SwSiaPay.config.shopId');
 			self::$macKeyRedirect = $this->systemConfigService->get('SwSiaPay.config.macKeyRedirect');
 			self::$apiResultKey   = $this->systemConfigService->get('SwSiaPay.config.apiResultKey');
@@ -125,6 +126,7 @@ class SiaPaymentController extends StorefrontController
 		require_once __DIR__ . '/../../vendor/sia-vpos/vpos-client-php-sdk/client/VPOSClient.php';
 
 		date_default_timezone_set('Europe/Rome');
+
 		$clientConfig  = new ClientConfig(self::$shopId, self::$macKeyRedirect, self::$apiResultKey, $siaPayWebUrl, '');
 		$vPOSClient    = new VPOSClient($clientConfig);
 		$requestParams = $this->buildOrderStatusDto($orderNumber);
